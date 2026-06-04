@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omixa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <h1 class="logo">OMIXA</h1>
+
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="upload.html">Upload</a>
+                <a href="docs.html">Docs</a>
+            </div>
+        </nav>
+    </header>
+    <main class="main">
+        <section class="upload-section">
+
+            <div class="upload-header">
+                <h1>Upload Healthcare Dataset</h1>
+        
+                <p>
+                    Upload CSV or Excel healthcare files for automatic cleaning,
+                    duplicate removal and standardization.
+                </p>
+            </div>
+        
+        
+            <div class="upload-box">
+
+                <div class="upload-icon">
+                    <i class="fa-solid fa-file-arrow-up"></i>
+                </div>
+            
+                <h3>Click to Upload or Drag and Drop</h3>
+            
+                <p>CSV, XLSX files only • Max size 25MB</p>
+            
+                <input type="file" id="fileInput" multiple>
+            
+            </div>
+            
+            
+            <!-- Uploaded Files Appear Here -->
+            
+            <div class="files-container" id="filesContainer"></div>
+            
+            
+            <button id="cleanBtn">Clean Dataset</button>
+        </section>
+    </main>
+    <script
+    const fileInput = document.getElementById("fileInput");
+const filesContainer = document.getElementById("filesContainer");
+const cleanBtn = document.getElementById("cleanBtn");
+
+let uploadedFiles = [];
+
+fileInput.addEventListener("change", () => {
+
+    filesContainer.innerHTML = "";
+
+    uploadedFiles = [...fileInput.files];
+
+    uploadedFiles.forEach(file => {
+
+        const fileCard = document.createElement("div");
+        fileCard.classList.add("file-card");
+
+        fileCard.innerHTML = `
+        
+            <div class="file-info">
+                <h4>${file.name}</h4>
+                <span>Ready to clean</span>
+            </div>
+
+        `;
+
+        filesContainer.appendChild(fileCard);
+
+    });
+
+});
+
+
+cleanBtn.addEventListener("click", () => {
+
+    const cards = document.querySelectorAll(".file-card");
+
+    cards.forEach((card, index) => {
+
+        card.innerHTML += `
+
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+
+            <p class="percentage">0%</p>
+
+        `;
+
+        const progress = card.querySelector(".progress");
+        const percentage = card.querySelector(".percentage");
+
+        let count = 0;
+
+        const interval = setInterval(() => {
+
+            count++;
+
+            progress.style.width = count + "%";
+            percentage.innerText = count + "%";
+
+            if(count >= 100){
+
+                clearInterval(interval);
+
+                percentage.innerText = "Completed ✓";
+
+            }
+
+        }, 30);
+
+    });
+
+});
+</script>
+    </body>
+    </html>
+       
